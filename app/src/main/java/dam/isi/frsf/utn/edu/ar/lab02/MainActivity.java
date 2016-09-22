@@ -1,10 +1,15 @@
 package dam.isi.frsf.utn.edu.ar.lab02;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
+import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
-
+import android.widget.Toast;
 
 
 import java.text.DecimalFormat;
@@ -15,14 +20,16 @@ import java.util.Random;
 
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        android.widget.CompoundButton.OnCheckedChangeListener {
 
     DecimalFormat f = new DecimalFormat("##.00");
 
     ElementoMenu[] listaBebidas;
     ElementoMenu[] listaPlatos;
     ElementoMenu[] listaPostre;
-
+    MiAdapter alimentos;
+    int idf;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,14 +42,44 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
-        RadioGroup rdGroup = (RadioGroup) findViewById(R.id.rdbGp1);
-        rdGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        RadioGroup radioGroup;
+        radioGroup = (RadioGroup) findViewById(R.id.grupock);
+
+        iniciarListas();
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+
 
             @Override
+
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // TODO Auto-generated method stub
+
+                // find which radio button is selected
+                ListView lv = (ListView) findViewById(R.id.listView);
+
+                if(checkedId == R.id.ckbebida) {
+
+                    Toast.makeText(getApplicationContext(), "choice:bebida",Toast.LENGTH_SHORT).show();
+                    MiAdapter a = new MiAdapter(getApplicationContext(), Arrays.asList(listaBebidas));
+                    lv.setAdapter(a);
+
+                } else if(checkedId == R.id.ckplato) {
+
+                    Toast.makeText(getApplicationContext(), "choice: plato", Toast.LENGTH_SHORT).show();
+                    MiAdapter a = new MiAdapter(getApplicationContext(), Arrays.asList(listaPlatos));
+                    lv.setAdapter(a);
+
+                } else {
+
+                    Toast.makeText(getApplicationContext(), "choice: postre",Toast.LENGTH_SHORT).show();
+                    MiAdapter a = new MiAdapter(getApplicationContext(), Arrays.asList(listaPostre));
+                    lv.setAdapter(a);
+
+                }
 
             }
+
         });
 
 
@@ -96,5 +133,24 @@ public class MainActivity extends AppCompatActivity {
             listaPostre[14]=new ElementoMenu(15,"Queso y Batata");
 
         }
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        ListView lv = (ListView) findViewById(R.id.listView);
+        int pos = lv.getPositionForView(buttonView);
+        if (pos != ListView.INVALID_POSITION) {
+
+            ;
+                Toast.makeText(
+                        this,
+                        "Clicked on Planet: " + pos + ". State: is "
+                                + isChecked, Toast.LENGTH_SHORT).show();
+
+
+
+        }
+    }
+
+
+
 
 }

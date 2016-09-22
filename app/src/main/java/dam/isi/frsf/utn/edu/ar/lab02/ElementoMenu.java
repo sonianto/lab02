@@ -15,7 +15,7 @@ public class ElementoMenu {
         private Integer id;
         private String nombre;
         private Double precio;
-
+        public  boolean selected=false;
         public ElementoMenu() {
         }
 
